@@ -1,29 +1,48 @@
 @using CRUD_EjercicioCapitalSalud.Models
 
-<h2>Home</h2>
+<h2>Gesti&oacuten de usuarios prueba Capital Salud</h2>
 
-@(Html.DevExtreme().DataGrid<Order>()
-    .ShowBorders(true)
-    .DataSource(d => d.Mvc().Controller("Orders").LoadAction("Get").Key("OrderID"))
-    .Columns(columns => {
-        columns.AddFor(m => m.OrderID);
-        columns.AddFor(m => m.OrderDate);
-        columns.AddFor(m => m.CustomerName);
-        columns.AddFor(m => m.ShipCountry);
-        columns.AddFor(m => m.ShipCity);
-    })
-    .Paging(p => p.PageSize(10))
-    .FilterRow(f => f.Visible(true))
-    .HeaderFilter(f => f.Visible(true))
-    .GroupPanel(p => p.Visible(true))
-    .Grouping(g => g.AutoExpandAll(false))
-    .RemoteOperations(true)
-    .Summary(s => s
-        .TotalItems(totalItems => {
-            totalItems.AddFor(m => m.ShipCity).SummaryType(SummaryType.Count);
+<div >
+    <a id="crearUsuario" href="#" title="Nuevo" onclick="NuevoUsuario();">
+        <i class="fas fa-plus"></i>
+        <span>Nuevo Usuario</span>
+    </a>
+</div>
+
+@(Html.DevExtreme().DataGrid<Usuario>()
+    .ID("GridUsuario")
+        .ShowBorders(true)
+        .DataSource(d => d.Mvc().Controller("Orders").LoadAction("Get").InsertAction("Post").UpdateAction("Put").DeleteAction("Delete").Key("Id"))
+
+        .Columns(columns =>
+        {
+            columns.AddFor(m => m.PrimerNombre);
+            columns.AddFor(m => m.SegundoNombre);
+            columns.AddFor(m => m.PrimerApellido);
+            columns.AddFor(m => m.SegundoApellido);
+            columns.AddFor(m => m.TipoDocumento);
+            columns.AddFor(m => m.Documento);
         })
-        .GroupItems(groupItems => {
-            groupItems.Add().SummaryType(SummaryType.Count);
+        .Editing(editing =>
+        {
+            editing.Mode(GridEditMode.Form);
+            editing.AllowUpdating(true);
+            editing.AllowDeleting(true);
+            editing.UseIcons(true);
         })
-    )
+        .Paging(p => p.PageSize(10))
+        .FilterRow(f => f.Visible(true))
+        .HeaderFilter(f => f.Visible(true))
+        .GroupPanel(p => p.Visible(true))
+        .Grouping(g => g.AutoExpandAll(false))
+        .RemoteOperations(true)
 )
+
+
+<script>
+
+    function NuevoUsuario() {
+        $("#GridUsuario").dxDataGrid("instance").addRow();
+    }
+
+</script>
